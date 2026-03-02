@@ -1,0 +1,24 @@
+{
+  "configurations": [
+    {
+      "type": "swift",
+      "request": "launch",
+      "args": [],
+      "cwd": "${workspaceFolder:MyBiz}",
+      "name": "Debug MyBiz",
+      "target": "MyBiz",
+      "configuration": "debug",
+      "preLaunchTask": "swift: Build Debug MyBiz"
+    },
+    {
+      "type": "swift",
+      "request": "launch",
+      "args": [],
+      "cwd": "${workspaceFolder:MyBiz}",
+      "name": "Release MyBiz",
+      "target": "MyBiz",
+      "configuration": "release",
+      "preLaunchTask": "swift: Build Release MyBiz"
+    }
+  ]
+}
