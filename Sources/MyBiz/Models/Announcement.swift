@@ -50,19 +50,6 @@ final class Announcement: Model, Content, @unchecked Sendable {
   }
 }
 
-struct CreateAnnouncements: Migration {
-  func prepare(on database: any Database) -> EventLoopFuture<Void> {
-    database.schema(Announcement.schema)
-      .id()
-      .field("message", .string, .required)
-      .create()
-  }
-
-  func revert(on database: any Database) -> EventLoopFuture<Void> {
-    database.schema(Announcement.schema).delete()
-  }
-}
-
 struct SeedAnnouncements: Migration {
   func prepare(on database: any Database) -> EventLoopFuture<Void> {
     Announcement(message: "A thing happened").create(on: database)

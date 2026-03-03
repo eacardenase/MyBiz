@@ -59,22 +59,6 @@ final class Event: Model, Content, @unchecked Sendable {
   }
 }
 
-struct CreateEvents: Migration {
-  func prepare(on database: any Database) -> EventLoopFuture<Void> {
-    database.schema(Event.schema)
-      .id()
-      .field("name", .string, .required)
-      .field("date", .datetime, .required)
-      .field("type", .string, .required)
-      .field("duration", .double, .required)
-      .create()
-  }
-
-  func revert(on database: any Database) -> EventLoopFuture<Void> {
-    database.schema(Announcement.schema).delete()
-  }
-}
-
 struct SeedEvents: Migration {
   func prepare(on database: any Database) -> EventLoopFuture<Void> {
     Event(name: "Alien invasion", date: Date().at(8), type: "Appointment", duration: .hours(1))

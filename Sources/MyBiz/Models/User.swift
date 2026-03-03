@@ -94,22 +94,6 @@ extension User: ModelAuthenticatable {
 
 }
 
-struct CreateUsers: Migration {
-  func prepare(on database: any Database) -> EventLoopFuture<Void> {
-    database.schema(User.schema)
-      .field("id", .uuid, .identifier(auto: true))
-      .field("username", .string, .required)
-      .unique(on: "username")
-      .field("name", .string, .required)
-      .field("passwordHash", .string, .required)
-      .create()
-  }
-
-  func revert(on database: any Database) -> EventLoopFuture<Void> {
-    database.schema(User.schema).delete()
-  }
-}
-
 struct SeedUsers: Migration {
   func prepare(on database: any Database) -> EventLoopFuture<Void> {
     let password = try? Bcrypt.hash("hailHydra")

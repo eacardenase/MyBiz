@@ -49,20 +49,6 @@ final class Product: Model, Content, @unchecked Sendable {
   }
 }
 
-struct CreateProducts: Migration {
-  func prepare(on database: any Database) -> EventLoopFuture<Void> {
-    database.schema(Product.schema)
-      .id()
-      .field("name", .string, .required)
-      .field("unitPrice", .double, .required)
-      .create()
-  }
-
-  func revert(on database: any Database) -> EventLoopFuture<Void> {
-    database.schema(Announcement.schema).delete()
-  }
-}
-
 let Moljnir = UUID(uuidString: "4270CFAB-2959-4308-A732-623A6D6F748F")!
 let Shield = UUID(uuidString: "7F6F4B73-D231-438F-93DF-8816FE07E443")!
 let Arrows = UUID(uuidString: "267F7506-3291-4261-A91C-26FDDE85E04E")!

@@ -69,24 +69,6 @@ final class Employee: Model, Content, @unchecked Sendable {
   }
 }
 
-struct CreateEmployees: Migration {
-  func prepare(on database: any Database) -> EventLoopFuture<Void> {
-    database.schema(Employee.schema)
-      .id()
-      .field("givenName", .string, .required)
-      .field("familyName", .string, .required)
-      .field("location", .string, .required)
-      .field("manager", .uuid)
-      .field("directReports", .array, .required)
-      .field("birthday", .string, .required)
-      .create()
-  }
-
-  func revert(on database: any Database) -> EventLoopFuture<Void> {
-    database.schema(Employee.schema).delete()
-  }
-}
-
 let BlackWidow = UUID(uuidString: "8803F62C-67F3-4A6E-AA0F-EBFE3FF4F08B")!
 struct SeedEmployees: Migration {
   func prepare(on database: any Database) -> EventLoopFuture<Void> {
