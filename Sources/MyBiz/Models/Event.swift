@@ -58,27 +58,3 @@ final class Event: Model, Content, @unchecked Sendable {
     self.duration = duration
   }
 }
-
-struct SeedEvents: Migration {
-  func prepare(on database: any Database) -> EventLoopFuture<Void> {
-    Event(name: "Alien invasion", date: Date().at(8), type: "Appointment", duration: .hours(1))
-      .create(on: database)
-      .and(
-        Event(
-          name: "Interview with Hydra", date: Date().at(13, minutes: 30), type: "Appointment",
-          duration: .hours(0.5)
-        ).create(on: database)
-      )
-      .and(
-        Event(
-          name: "Panic attack", date: Date(timeIntervalSinceNow: .days(7)).at(10), type: "Meeting",
-          duration: .hours(1)
-        ).create(on: database)
-      )
-      .transform(to: ())
-  }
-
-  func revert(on database: any Database) -> EventLoopFuture<Void> {
-    database.eventLoop.makeSucceededVoidFuture()
-  }
-}

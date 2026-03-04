@@ -12,19 +12,17 @@ public func configure(_ app: Application) async throws {
 
     app.migrations.add(CreateTodo())
     app.migrations.add(CreateUser())
-    app.migrations.add(SeedUsers())
     app.migrations.add(CreateToken())
 
     app.migrations.add(CreateAnnouncement())
-    app.migrations.add(SeedAnnouncements())
     app.migrations.add(CreateEmployee())
-    app.migrations.add(SeedEmployees())
     app.migrations.add(CreateEvent())
-    app.migrations.add(SeedEvents())
     app.migrations.add(CreateProduct())
-    app.migrations.add(SeedProducts())
     app.migrations.add(CreatePurchase())
-    app.migrations.add(SeedPurchases())
+
+    if app.environment != .testing {
+        app.migrations.add(DatabaseSeed())
+    }
 
     // register routes
     try routes(app)

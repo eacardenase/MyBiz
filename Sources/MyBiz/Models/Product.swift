@@ -48,26 +48,3 @@ final class Product: Model, Content, @unchecked Sendable {
     self.unitPrice = unitPrice
   }
 }
-
-let Moljnir = UUID(uuidString: "4270CFAB-2959-4308-A732-623A6D6F748F")!
-let Shield = UUID(uuidString: "7F6F4B73-D231-438F-93DF-8816FE07E443")!
-let Arrows = UUID(uuidString: "267F7506-3291-4261-A91C-26FDDE85E04E")!
-struct SeedProducts: Migration {
-  func prepare(on database: any Database) -> EventLoopFuture<Void> {
-    Product(name: "Exploding Arrows", unitPrice: 38.5).create(on: database)
-      .and(Product(id: Arrows, name: "Electrical Arrows", unitPrice: 119.28).create(on: database))
-      .and(Product(name: "Acid Arrow", unitPrice: 9.5).create(on: database))
-      .and(Product(id: Moljnir, name: "Moljnir", unitPrice: 72000).create(on: database))
-      .and(Product(id: Shield, name: "Shield", unitPrice: 1_200_837).create(on: database))
-      .and(Product(name: "Web Slinger", unitPrice: 750).create(on: database))
-      .and(Product(name: "Nanotech Armor", unitPrice: 650_888).create(on: database))
-      .and(Product(name: "Metal Claws", unitPrice: 27_800).create(on: database))
-      .and(Product(name: "Fortune Cookie 🥠", unitPrice: 0.5).create(on: database))
-      .and(Product(name: "Blank Cassette", unitPrice: 45.66).create(on: database))
-      .transform(to: ())
-  }
-
-  func revert(on database: any Database) -> EventLoopFuture<Void> {
-    database.eventLoop.makeSucceededVoidFuture()
-  }
-}

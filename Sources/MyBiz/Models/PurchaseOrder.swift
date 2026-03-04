@@ -72,34 +72,3 @@ final class PurchaseOrder: Model, Content, @unchecked Sendable {
     self.purchases = purchases
   }
 }
-
-struct SeedPurchases: Migration {
-  func prepare(on database: any Database) -> EventLoopFuture<Void> {
-    PurchaseOrder(
-      poNumber: "88616",
-      comment: "For Assembly",
-      purchaser: BlackWidow,
-      purchaseDate: Date(),
-      dueDate: nil,
-      purchases: [
-        PurchaseOrder.Purchase(productId: Moljnir, quantity: 1),
-        PurchaseOrder.Purchase(productId: Shield, quantity: 1),
-      ]
-    ).create(on: database)
-      .and(
-        PurchaseOrder(
-          poNumber: "88617",
-          comment: nil,
-          purchaser: BlackWidow,
-          purchaseDate: Date(),
-          dueDate: Date(timeIntervalSinceNow: .days(7)),
-          purchases: [PurchaseOrder.Purchase(productId: Arrows, quantity: 400)]
-        ).create(on: database)
-      )
-      .transform(to: ())
-  }
-
-  func revert(on database: any Database) -> EventLoopFuture<Void> {
-    database.eventLoop.makeSucceededVoidFuture()
-  }
-}

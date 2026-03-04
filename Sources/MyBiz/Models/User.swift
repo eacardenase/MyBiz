@@ -63,17 +63,30 @@ final class User: Model, @unchecked Sendable {
 
 extension User {
   static func create(from userSignup: UserSignup) throws -> User {
-    User(
+    let user = User(
       name: userSignup.name, username: userSignup.username,
       passwordHash: try Bcrypt.hash(userSignup.password))
+
+    print(user)
+
+    return user
   }
 
   func createToken(source: SessionSource) throws -> Token {
     let calendar = Calendar(identifier: .gregorian)
     let expiryDate = calendar.date(byAdding: .year, value: 1, to: Date())
-    return try Token(
-      userId: requireID(),
-      token: [UInt8].random(count: 16).base64, source: source, expiresAt: expiryDate)
+
+    do {
+      let token = try Token(
+        userId: requireID(),
+        token: [UInt8].random(count: 16).base64, source: source, expiresAt: expiryDate)
+
+      return token
+    } catch {
+      print(error)
+
+      throw error
+    }
   }
 
   func asPublic() throws -> Public {
@@ -90,23 +103,6 @@ extension User: ModelAuthenticatable {
 
   func verify(password: String) throws -> Bool {
     try Bcrypt.verify(password, created: self.passwordHash)
-  }
-
-}
-
-struct SeedUsers: Migration {
-  func prepare(on database: any Database) -> EventLoopFuture<Void> {
-    let password = try? Bcrypt.hash("hailHydra")
-    guard let hashedPassword = password else {
-      fatalError("Failed to create admin user")
-    }
-    let user = User(name: "Agent", username: "agent@shield.org", passwordHash: hashedPassword)
-    return user.create(on: database)
-      .transform(to: ())
-  }
-
-  func revert(on database: any Database) -> EventLoopFuture<Void> {
-    database.eventLoop.makeSucceededVoidFuture()
   }
 
 }
